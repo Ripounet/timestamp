@@ -48,7 +48,7 @@ const JSON_TEMPLATE = `{
 	"timestampSeconds": %v,
 	"timestampMilliSeconds": %v,
 	"timestampNanoseconds": %v,
-	"date": %v
+	"date": "%v"
 }`
 
 
