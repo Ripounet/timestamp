@@ -5,20 +5,10 @@ import (
 	"net/http"
 )
 
-const JSON_TEMPLATE = `{
-	"timestampSeconds": %v,
-	"timestampMilliSeconds": %v,
-	"timestampNanoseconds": %v,
-	"date": %v
-}`
-
 func init() {
 	// Root = howto
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-		fmt.Fprintln(w, "/ : display this message")
-		fmt.Fprintln(w, "/raw?q=123 : try to decode 123, and prints plain text result")
-		fmt.Fprintln(w, "/json?q=123 : try to decode 123, and prints JSON result")
+		fmt.Fprintln(w, HOME_TEMPLATE)
 	})
 
 	// Raw: spits text answer only
@@ -52,5 +42,42 @@ func init() {
 		fmt.Fprintf(w, JSON_TEMPLATE,
 			t.Unix(), t.UnixNano()/1000000, t.UnixNano(), t)
 	})
-
 }
+
+const JSON_TEMPLATE = `{
+	"timestampSeconds": %v,
+	"timestampMilliSeconds": %v,
+	"timestampNanoseconds": %v,
+	"date": %v
+}`
+
+
+const HOME_TEMPLATE = `
+<html>
+<head>
+	<title>Online timestamp stuff</title>
+</head>
+<body>
+	<h1>Online timestamp &amp; date (approximate) codec</h1>
+	<div>
+		<dl>
+			<dd>/</dd>
+			<dt>display this message</dt>
+			<dd>/raw?q=<b><i>123</b></i></dd>
+			<dt>try to decode <b><i>123</b></i>, and gives plain text result</dt>
+			<dd>/json?q=<b><i>123</b></i></dd>
+			<dt>try to decode <b><i>123</b></i>, and gives JSON result</dt>
+		</dl>
+		
+		<hr/>
+		
+		<form action="/raw">
+			Raw <input type="text" name="q" value="123" /> <input type="submit" value="&gt;" />
+		</form>
+		<form action="/json">
+			JSON <input type="text" name="q" value="123" /> <input type="submit" value="&gt;" />
+		</form>
+	</div>
+</body>
+</html>
+`
