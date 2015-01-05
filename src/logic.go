@@ -32,20 +32,23 @@ func parseUnknown(s string) (time.Time, error) {
 	n, err := strconv.ParseInt(s, 10, 64)
 	if err == nil {
 		switch {
-		case TS_SECONDS_MIN < n && n < TS_SECONDS_MAX:
-			return time.Unix(n, 0), nil
-		case TS_MILLISECONDS_MIN < n && n < TS_MILLISECONDS_MAX:
-			return time.Unix(n/1000, n%1000), nil
-		case TS_MICROSECONDS_MIN < n && n < TS_MICROSECONDS_MAX:
-			return time.Unix(n/1000000, n%1000000), nil
-		case TS_NANOSECONDS_MIN < n && n < TS_NANOSECONDS_MAX:
-			return time.Unix(n/1000000000, n%1000000000), nil
+		// Date-like
 		case 18000101 < n && n < 22000101:
 			return time.Parse("20060102", s)
 		case 180001010000 < n && n <= 220001012359:
 			return time.Parse("200601021504", s)
 		case 18000101000000 < n && n <= 22000101235959:
 			return time.Parse("20060102150405", s)
+
+		// Timestamp-like
+		case TS_SECONDS_MIN < n && n < TS_SECONDS_MAX:
+			return time.Unix(n, 0), nil
+		case TS_MILLISECONDS_MIN < n && n < TS_MILLISECONDS_MAX:
+			return time.Unix(n/1000, (n%1000)*1000000), nil
+		case TS_MICROSECONDS_MIN < n && n < TS_MICROSECONDS_MAX:
+			return time.Unix(n/1000000, (n%1000000)*1000), nil
+		case TS_NANOSECONDS_MIN < n && n < TS_NANOSECONDS_MAX:
+			return time.Unix(n/1000000000, n%1000000000), nil
 		}
 	}
 	// Try removing useless chars
