@@ -40,6 +40,8 @@ func init() {
 
 	// Raw: spits text answer only
 	http.HandleFunc("/raw", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+	
 		q := r.FormValue("q")
 		t, _, _, err := parseUnknown(q)
 
@@ -57,6 +59,8 @@ func init() {
 
 	// JSON
 	http.HandleFunc("/json", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+	
 		q := r.FormValue("q")
 		t, _, _, err := parseUnknown(q)
 
