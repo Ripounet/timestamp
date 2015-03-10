@@ -8,10 +8,10 @@ import (
 
 func init() {
 	htmlTemplate, err := template.New("tmpl").Parse(HTML_TEMPLATE)
-	if err!=nil{
+	if err != nil {
 		panic(err)
 	}
-	
+
 	// Root = howto
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		q := r.FormValue("q")
@@ -19,17 +19,17 @@ func init() {
 		if err == nil {
 			// We have a valid parameter
 			data := Response{
-				"Input": clean,
-				"S": t.Unix(),
-				"Ms": t.UnixNano()/1000000,
-				"Mµs": t.UnixNano()/1000,
-				"Ns": t.UnixNano(),
-				"DateStr": t,
-				"Unit": unit,
-				"IsATimestamp": (unit=="seconds" || unit=="milliseconds" || unit=="microseconds" || unit=="nanoseconds"),
+				"Input":        clean,
+				"S":            t.Unix(),
+				"Ms":           t.UnixNano() / 1000000,
+				"Mµs":          t.UnixNano() / 1000,
+				"Ns":           t.UnixNano(),
+				"DateStr":      t,
+				"Unit":         unit,
+				"IsATimestamp": (unit == "seconds" || unit == "milliseconds" || unit == "microseconds" || unit == "nanoseconds"),
 			}
 			err := htmlTemplate.ExecuteTemplate(w, "tmpl", data)
-			if err!=nil{
+			if err != nil {
 				panic(err)
 			}
 			return
@@ -41,7 +41,7 @@ func init() {
 	// Raw: spits text answer only
 	http.HandleFunc("/raw", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
-	
+
 		q := r.FormValue("q")
 		t, _, _, err := parseUnknown(q)
 
@@ -60,7 +60,7 @@ func init() {
 	// JSON
 	http.HandleFunc("/json", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
-	
+
 		q := r.FormValue("q")
 		t, _, _, err := parseUnknown(q)
 
@@ -71,13 +71,14 @@ func init() {
 			return
 		}
 		fmt.Fprintf(w, JSON_TEMPLATE,
-			t.Unix(), t.UnixNano()/1000000, t.UnixNano(), t)
+			t.Unix(), t.UnixNano()/1000000, t.UnixNano()/1000, t.UnixNano(), t)
 	})
 }
 
 const JSON_TEMPLATE = `{
 	"timestampSeconds": %v,
 	"timestampMilliSeconds": %v,
+	"timestampMicroSeconds": %v,
 	"timestampNanoseconds": %v,
 	"date": "%v"
 }`
