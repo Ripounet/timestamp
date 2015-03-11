@@ -127,11 +127,11 @@ const HTML_TEMPLATE = `
 	<div>
 		This value seems to be a timestamp in <b>{{.Unit}}</b> {{if .IsATimestamp}}since <abbr title="1970-01-01 00:00:00">epoch</abbr>.{{end}}
 		<table>
+			<tr><th>Date</th><td><b>{{.DateStr}}</b></td></tr>
 			<tr><th>Seconds</th><td>{{.S}}</td></tr>
 			<tr><th>Milliseconds</th><td>{{.Ms}}</td></tr>
 			<tr><th>Microseconds</th><td>{{.Mµs}}</td></tr>
 			<tr><th>Nanoseconds</th><td>{{.Ns}}</td></tr>
-			<tr><th>Date</th><td>{{.DateStr}}</td></tr>
 		</table>
 		<hr/>
 		
