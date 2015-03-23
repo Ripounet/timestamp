@@ -119,7 +119,7 @@ const HOME_TEMPLATE = `
 const HTML_TEMPLATE = `
 <html>
 <head>
-	<title>Online timestamp for value {.Input}}</title>
+	<title>Online timestamp for value {{.Input}}</title>
 	<style>abbr{ border-bottom: 2px dotted; }</style>
 </head>
 <body>
